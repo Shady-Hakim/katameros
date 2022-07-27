@@ -24,7 +24,7 @@ RenderCategory.propTypes = {
     name: PropTypes.string,
   }),
   navigation: PropTypes.shape({
-    navigate: PropTypes.object,
+    navigate: PropTypes.func,
   }),
 };
 export default RenderCategory;

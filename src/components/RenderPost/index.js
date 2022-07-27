@@ -21,7 +21,7 @@ RenderPost.propTypes = {
     title: PropTypes.string,
   }),
   navigation: PropTypes.shape({
-    navigate: PropTypes.object,
+    navigate: PropTypes.func,
   }),
 };
 export default RenderPost;
