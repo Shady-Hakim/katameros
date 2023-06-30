@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  View,
+  I18nManager,
+} from 'react-native';
+import AppNavigagtor from './src/navigation/AppNavigator';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-export default function App() {
+const queryClient = new QueryClient();
+
+const App = () => {
+  useEffect(() => {
+    I18nManager.forceRTL(true);
+  });
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <View style={styles.container}>
+        <StatusBar barStyle={'light-content'} backgroundColor={'#4c2710'} />
+        <AppNavigagtor />
+      </View>
+    </QueryClientProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#4c2710',
   },
 });
+
+export default App;
