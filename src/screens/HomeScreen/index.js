@@ -12,8 +12,8 @@ import usePagesdata from '../../hooks/usePagesData';
 import RenderHTML from 'react-native-render-html';
 
 function HomeScreen() {
-  const {isLoading, data, isError, error} = usePagesdata(518);
-  const {width} = useWindowDimensions();
+  const { isLoading, data, isError, error } = usePagesdata(518);
+  const { width } = useWindowDimensions();
 
   const tagsStyles = {
     p: {
@@ -65,8 +65,9 @@ function HomeScreen() {
         </View>
         <RenderHTML
           contentWidth={width}
-          source={{html: data && data[0].content}}
+          source={{ html: data && data[0].content }}
           tagsStyles={tagsStyles}
+          ignoredDomTags={['form']}
         />
         <Image
           style={styles.holandLogo}

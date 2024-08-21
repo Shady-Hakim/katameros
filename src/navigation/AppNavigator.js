@@ -16,19 +16,25 @@ const Stack = createNativeStackNavigator();
 
 const CategoriesStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerBackTitle: 'الرجوع' }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerBackTitle: 'الرجوع',
+        headerStyle: {
+          backgroundColor: '#f3f3f3',
+        },
+      }}>
       <Stack.Screen
-        name='Categories'
+        name="Categories"
         component={CategoriesScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name='Posts'
+        name="Posts"
         component={PostsScreen}
         options={({ route }) => ({ title: route.params.name || 'القراءات' })}
       />
       <Stack.Screen
-        name='Single'
+        name="Single"
         component={SinglePostScreen}
         options={({ route }) => ({ title: route.params.title || 'القراءات' })}
       />
@@ -36,12 +42,12 @@ const CategoriesStackNavigator = () => {
   );
 };
 
-const AppNavigagtor = () => {
+const AppNavigator = () => {
   const { Navigator, Screen } = Drawer;
   return (
     <NavigationContainer>
       <Navigator
-        initialRouteName='Home'
+        initialRouteName="Home"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#4c2710',
@@ -57,15 +63,14 @@ const AppNavigagtor = () => {
             alignSelf: 'flex-start',
           },
           overlayColor: 'transparent',
-        }}
-      >
+        }}>
         <Screen
-          name='Home'
+          name="Home"
           component={HomeScreen}
           options={{ drawerLabel: 'كلمة افتتاحية', title: 'كلمة افتتاحية' }}
         />
         <Screen
-          name='Arsany'
+          name="Arsany"
           component={PageScreen}
           options={{
             drawerLabel: 'تقديم نيافة الأنبا أرساني',
@@ -74,7 +79,7 @@ const AppNavigagtor = () => {
           initialParams={{ pageId: 2 }}
         />
         <Screen
-          name='Yassa'
+          name="Yassa"
           component={PageScreen}
           options={{
             drawerLabel: 'تقديم القمص يسي ثابت',
@@ -83,7 +88,7 @@ const AppNavigagtor = () => {
           initialParams={{ pageId: 7 }}
         />
         <Screen
-          name='Maana'
+          name="Maana"
           component={PageScreen}
           options={{
             drawerLabel: 'معني ومغزي القراءات الكنسية',
@@ -92,7 +97,7 @@ const AppNavigagtor = () => {
           initialParams={{ pageId: 9 }}
         />
         <Screen
-          name='Readings'
+          name="Readings"
           component={CategoriesStackNavigator}
           options={{ drawerLabel: 'القراءات', title: 'القراءات' }}
         />
@@ -101,4 +106,4 @@ const AppNavigagtor = () => {
   );
 };
 
-export default AppNavigagtor;
+export default AppNavigator;

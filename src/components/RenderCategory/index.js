@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {Text, TouchableOpacity} from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
 
-const RenderCategory = ({item, navigation}) => {
+const RenderCategory = memo(({ item, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('Posts', {
+        navigation.push('Posts', {
           id: item.id,
           name: item.name,
         })
@@ -17,7 +17,8 @@ const RenderCategory = ({item, navigation}) => {
       <Text style={styles.categoryTitle}>{item?.name} &#10219;</Text>
     </TouchableOpacity>
   );
-};
+});
+
 RenderCategory.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.number,
