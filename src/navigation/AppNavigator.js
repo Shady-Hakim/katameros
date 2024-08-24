@@ -1,8 +1,10 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 import {
   HomeScreen,
   CategoriesScreen,
@@ -48,7 +50,16 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Navigator
         initialRouteName="Home"
-        screenOptions={{
+        screenOptions={({ navigation }) => ({
+          headerLeft: () => (
+            <Ionicons
+              name="menu-sharp"
+              style={{ marginStart: 10 }}
+              size={32}
+              color="#fff"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            />
+          ),
           headerStyle: {
             backgroundColor: '#4c2710',
           },
@@ -63,7 +74,7 @@ const AppNavigator = () => {
             alignSelf: 'flex-start',
           },
           overlayColor: 'transparent',
-        }}>
+        })}>
         <Screen
           name="Home"
           component={HomeScreen}

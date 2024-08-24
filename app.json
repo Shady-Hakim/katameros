@@ -2,7 +2,7 @@
   "expo": {
     "name": "Katameros",
     "slug": "Katameros",
-    "version": "1.0.1",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -12,12 +12,18 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/52f19064-ca95-4791-9176-d9894aa8a4b5",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ilampagency.katameros"
+      "bundleIdentifier": "com.ilampagency.katameros",
+      "buildNumber": "4"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +31,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.ilampagency.katameros",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +40,9 @@
       "eas": {
         "projectId": "52f19064-ca95-4791-9176-d9894aa8a4b5"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
