@@ -17,9 +17,7 @@
       "enabled": true,
       "checkAutomatically": "ON_LOAD"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ilampagency.katameros",
@@ -30,8 +28,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.ilampagency.katameros",
-      "versionCode": 4
+      "package": "com.ilampagency.katamerosApp",
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/favicon.png"

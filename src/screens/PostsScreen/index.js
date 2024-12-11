@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import styles from './styles';
@@ -9,66 +9,52 @@ import RenderPost from '../../components/RenderPost';
 
 function PostsScreen({ route, navigation }) {
   const { id } = route.params;
-  const [postsPage, setPostsPage] = useState(1);
-  const [catPage, setCatPage] = useState(1);
-  const [refreshing, setRefreshing] = useState(false);
-  const [isFetchingMorePosts, setIsFetchingMorePosts] = useState(false);
-  const [isFetchingMoreCategories, setIsFetchingMoreCategories] =
-    useState(false);
 
   const {
     isLoading: postsIsLoading,
-    data: posts,
+    data: postsData,
     isError: postsIsError,
     error: postsError,
     fetchNextPage: fetchNextPostsPage,
     hasNextPage: hasNextPostsPage,
     refetch: postsRefetch,
-  } = usePostsData(id, postsPage);
+  } = usePostsData(id);
 
   const {
     isLoading: catIsLoading,
-    data: categories,
+    data: categoriesData,
     isError: catIsError,
     error: catError,
     fetchNextPage: fetchNextCatPage,
     hasNextPage: hasNextCatPage,
     refetch: catRefetch,
-  } = useCategoriesData(id, catPage);
+  } = useCategoriesData(id);
 
   const isLoading = postsIsLoading || catIsLoading;
   const isError = postsIsError || catIsError;
   const error = postsError || catError;
 
+  const posts = postsData?.pages.flatMap((page) => page.posts) || [];
+  const categories = (!hasNextPostsPage && categoriesData) || [];
+
   const handleLoadMorePosts = useCallback(() => {
-    if (hasNextPostsPage && !isFetchingMorePosts) {
-      setIsFetchingMorePosts(true);
-      setPostsPage((prevPage) => prevPage + 1);
-      fetchNextPostsPage().finally(() => setIsFetchingMorePosts(false));
+    if (hasNextPostsPage) {
+      fetchNextPostsPage();
     }
-  }, [hasNextPostsPage, isFetchingMorePosts, fetchNextPostsPage]);
+  }, [hasNextPostsPage, fetchNextPostsPage]);
 
   const handleLoadMoreCategories = useCallback(() => {
-    if (!hasNextPostsPage && hasNextCatPage && !isFetchingMoreCategories) {
-      setIsFetchingMoreCategories(true);
-      setCatPage((prevPage) => prevPage + 1);
-      fetchNextCatPage().finally(() => setIsFetchingMoreCategories(false));
+    if (!hasNextPostsPage && hasNextCatPage) {
+      fetchNextCatPage();
     }
-  }, [
-    hasNextPostsPage,
-    hasNextCatPage,
-    isFetchingMoreCategories,
-    fetchNextCatPage,
-  ]);
+  }, [hasNextPostsPage, hasNextCatPage, fetchNextCatPage]);
 
   const handleRefresh = async () => {
-    setRefreshing(true);
     await postsRefetch();
     await catRefetch();
-    setRefreshing(false);
   };
 
-  if (isLoading && postsPage === 1) {
+  if (isLoading && posts.length === 0) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" />
@@ -84,11 +70,7 @@ function PostsScreen({ route, navigation }) {
     );
   }
 
-  return !posts.length && !categories.length ? (
-    <View style={styles.loadingContainer}>
-      <Text>جاري العمل علي إضافتها</Text>
-    </View>
-  ) : (
+  return (
     <FlatList
       data={posts}
       renderItem={({ item }) => (
@@ -97,11 +79,13 @@ function PostsScreen({ route, navigation }) {
       keyExtractor={(item) => item.id.toString()}
       onEndReached={handleLoadMorePosts}
       onEndReachedThreshold={0.5}
-      refreshing={refreshing}
+      refreshing={false}
       onRefresh={handleRefresh}
       ListFooterComponent={() => (
         <>
-          {!hasNextPostsPage && (
+          {hasNextPostsPage ? (
+            <ActivityIndicator size="small" />
+          ) : (
             <FlatList
               data={categories}
               renderItem={({ item }) => (
@@ -110,15 +94,10 @@ function PostsScreen({ route, navigation }) {
               keyExtractor={(item) => item.id.toString()}
               onEndReached={handleLoadMoreCategories}
               onEndReachedThreshold={0.5}
-              ListFooterComponent={
-                isFetchingMoreCategories && (
-                  <ActivityIndicator size="small" color="#0000ff" />
-                )
+              ListFooterComponent={() =>
+                hasNextCatPage && <ActivityIndicator size="small" />
               }
             />
-          )}
-          {isFetchingMorePosts && (
-            <ActivityIndicator size="small" color="#0000ff" />
           )}
         </>
       )}
@@ -132,4 +111,5 @@ PostsScreen.propTypes = {
   }),
   navigation: PropTypes.object,
 };
+
 export default PostsScreen;

@@ -17,7 +17,7 @@ function CategoriesScreen({ navigation }) {
 
   const renderItem = useCallback(
     ({ item }) => <RenderCategory item={item} navigation={navigation} />,
-    [navigation]
+    [navigation],
   );
 
   const handleRefresh = async () => {
