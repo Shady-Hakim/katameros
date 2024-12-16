@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchPosts from '../controllers/fetchPosts';
-import fetchSinglePost from '../controllers/fetchSinglePost';
+import fetchPages from '../controllers/fetchPages';
 
 // Save categories to AsyncStorage
 export const saveCategories = async (categories) => {
@@ -40,6 +40,14 @@ export const saveCategoryPosts = async (categoryId) => {
     } else {
       hasNextPage = false;
     }
+  }
+};
+export const savePages = async (pageId) => {
+  const pages = await fetchPages(pageId);
+
+  if (pages) {
+    await AsyncStorage.setItem(`pages-${pageId}`, JSON.stringify(pages));
+    console.log(`Pages for page ${pageId} saved to AsyncStorage.`);
   }
 };
 

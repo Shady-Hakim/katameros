@@ -14,7 +14,6 @@ function PostsScreen({ route, navigation }) {
     isLoading: postsIsLoading,
     data: postsData,
     isError: postsIsError,
-    error: postsError,
     fetchNextPage: fetchNextPostsPage,
     hasNextPage: hasNextPostsPage,
     refetch: postsRefetch,
@@ -24,7 +23,6 @@ function PostsScreen({ route, navigation }) {
     isLoading: catIsLoading,
     data: categoriesData,
     isError: catIsError,
-    error: catError,
     fetchNextPage: fetchNextCatPage,
     hasNextPage: hasNextCatPage,
     refetch: catRefetch,
@@ -32,7 +30,6 @@ function PostsScreen({ route, navigation }) {
 
   const isLoading = postsIsLoading || catIsLoading;
   const isError = postsIsError || catIsError;
-  const error = postsError || catError;
 
   const posts = postsData?.pages.flatMap((page) => page.posts) || [];
   const categories = categoriesData || [];
@@ -65,7 +62,9 @@ function PostsScreen({ route, navigation }) {
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>{error.message}</Text>
+        <Text>
+          حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى لاحقًا.
+        </Text>
       </View>
     );
   }

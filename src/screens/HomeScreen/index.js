@@ -7,10 +7,7 @@ import useCategoriesData from '../../hooks/useCategoriesData';
 
 function HomeScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
-  const { isLoading, data, isError, error, refetch } = useCategoriesData(
-    0,
-    false,
-  );
+  const { isLoading, data, isError, refetch } = useCategoriesData(0, false);
   data?.shift();
 
   const handleRefresh = async () => {
@@ -35,7 +32,9 @@ function HomeScreen({ navigation }) {
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>{error.message}</Text>
+        <Text>
+          حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى لاحقًا.
+        </Text>
       </View>
     );
   }

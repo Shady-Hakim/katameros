@@ -14,7 +14,7 @@ import styles from '../PageScreen/styles';
 
 function PageScreen({ route }) {
   const { pageId } = route.params;
-  const { isLoading, data, isError, error, refetch } = usePagesData(pageId);
+  const { isLoading, data, isError, refetch } = usePagesData(pageId);
   const [refreshing, setRefreshing] = useState(false);
   const { width } = useWindowDimensions();
 
@@ -30,7 +30,7 @@ function PageScreen({ route }) {
         fontSize: 18,
       },
     }),
-    []
+    [],
   );
 
   if (isLoading && !refreshing) {
@@ -43,7 +43,9 @@ function PageScreen({ route }) {
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>{error.message}</Text>
+        <Text>
+          حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى لاحقًا.
+        </Text>
       </View>
     );
   }
@@ -51,7 +53,8 @@ function PageScreen({ route }) {
     <ScrollView
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
+      }
+    >
       <View style={styles.container}>
         <RenderHTML
           contentWidth={width}

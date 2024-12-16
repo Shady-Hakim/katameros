@@ -8,7 +8,7 @@ import RenderCategory from '../../components/RenderCategory';
 function CategoriesScreen({ navigation }) {
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
-  const { isLoading, data, isError, error, refetch } = useCategoriesData(0);
+  const { isLoading, data, isError, refetch } = useCategoriesData(0);
   data?.shift();
 
   const handleLoadMore = () => {
@@ -36,7 +36,9 @@ function CategoriesScreen({ navigation }) {
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>{error.message}</Text>
+        <Text>
+          حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى لاحقًا.
+        </Text>
       </View>
     );
   }

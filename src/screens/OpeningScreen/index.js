@@ -12,7 +12,7 @@ import usePagesdata from '../../hooks/usePagesData';
 import RenderHTML from 'react-native-render-html';
 
 function OpeningScreen() {
-  const { isLoading, data, isError, error } = usePagesdata(518);
+  const { isLoading, data, isError } = usePagesdata(518);
   const { width } = useWindowDimensions();
 
   const tagsStyles = {
@@ -32,7 +32,9 @@ function OpeningScreen() {
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>{error.message}</Text>
+        <Text>
+          حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى لاحقًا.
+        </Text>
       </View>
     );
   }

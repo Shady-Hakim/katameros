@@ -15,7 +15,7 @@ import styles from '../SinglePostScreen/styles';
 
 function SinglePostScreen({ route }) {
   const { id } = route.params;
-  const { isLoading, data, isError, error, refetch } = useSinglePost(id);
+  const { isLoading, data, isError, refetch } = useSinglePost(id);
   const { width } = useWindowDimensions();
   const [refreshing, setRefreshing] = useState(false);
   const ref = React.useRef();
@@ -67,7 +67,9 @@ function SinglePostScreen({ route }) {
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>{error.message}</Text>
+        <Text>
+          حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى لاحقًا.
+        </Text>
       </View>
     );
   }
