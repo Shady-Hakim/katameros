@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import {
   HomeScreen,
+  OpeningScreen,
   CategoriesScreen,
   PostsScreen,
   SinglePostScreen,
@@ -16,105 +17,137 @@ import {
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
-const CategoriesStackNavigator = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerBackTitle: 'الرجوع',
-        headerStyle: {
-          backgroundColor: '#f3f3f3',
-        },
-      }}>
-      <Stack.Screen
-        name="Categories"
-        component={CategoriesScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Posts"
-        component={PostsScreen}
-        options={({ route }) => ({ title: route.params.name || 'القراءات' })}
-      />
-      <Stack.Screen
-        name="Single"
-        component={SinglePostScreen}
-        options={({ route }) => ({ title: route.params.title || 'القراءات' })}
-      />
-    </Stack.Navigator>
-  );
+const defaultStackScreenOptions = {
+  headerBackTitle: 'الرجوع',
+  headerStyle: {
+    backgroundColor: '#f3f3f3',
+  },
 };
 
-const AppNavigator = () => {
-  const { Navigator, Screen } = Drawer;
-  return (
-    <NavigationContainer>
-      <Navigator
-        initialRouteName="Home"
-        screenOptions={({ navigation }) => ({
-          headerLeft: () => (
-            <Ionicons
-              name="menu-sharp"
-              style={{ marginStart: 10 }}
-              size={32}
-              color="#fff"
-              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            />
-          ),
-          headerStyle: {
-            backgroundColor: '#4c2710',
-          },
-          headerTintColor: '#fff',
-          drawerStyle: {
-            backgroundColor: '#4c2710',
-            width: 280,
-          },
-          drawerLabelStyle: {
-            fontSize: 18,
-            color: '#fff',
-            alignSelf: 'flex-start',
-          },
-          overlayColor: 'transparent',
-        })}>
-        <Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ drawerLabel: 'كلمة افتتاحية', title: 'كلمة افتتاحية' }}
-        />
-        <Screen
-          name="Arsany"
-          component={PageScreen}
-          options={{
-            drawerLabel: 'تقديم نيافة الأنبا أرساني',
-            title: 'تقديم نيافة الأنبا أرساني',
-          }}
-          initialParams={{ pageId: 2 }}
-        />
-        <Screen
-          name="Yassa"
-          component={PageScreen}
-          options={{
-            drawerLabel: 'تقديم القمص يسي ثابت',
-            title: 'تقديم القمص يسي ثابت',
-          }}
-          initialParams={{ pageId: 7 }}
-        />
-        <Screen
-          name="Maana"
-          component={PageScreen}
-          options={{
-            drawerLabel: 'معني ومغزي القراءات الكنسية',
-            title: 'معني ومغزي القراءات الكنسية',
-          }}
-          initialParams={{ pageId: 9 }}
-        />
-        <Screen
-          name="Readings"
-          component={CategoriesStackNavigator}
-          options={{ drawerLabel: 'القراءات', title: 'القراءات' }}
-        />
-      </Navigator>
-    </NavigationContainer>
-  );
-};
+const defaultDrawerScreenOptions = ({ navigation }) => ({
+  headerLeft: () => (
+    <Ionicons
+      name="menu-sharp"
+      style={{ marginStart: 10 }}
+      size={32}
+      color="#fff"
+      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+    />
+  ),
+  headerStyle: {
+    backgroundColor: '#4c2710',
+  },
+  headerTintColor: '#fff',
+  drawerStyle: {
+    backgroundColor: '#4c2710',
+    width: 280,
+  },
+  drawerLabelStyle: {
+    fontSize: 18,
+    color: '#fff',
+    alignSelf: 'flex-start',
+  },
+});
+
+const createDynamicStackNavigator = (screens) => (
+  <Stack.Navigator screenOptions={defaultStackScreenOptions}>
+    {screens.map(({ name, component, options }, index) => (
+      <Stack.Screen
+        key={index}
+        name={name}
+        component={component}
+        options={options}
+      />
+    ))}
+  </Stack.Navigator>
+);
+const AppNavigator = () => (
+  <NavigationContainer>
+    <Drawer.Navigator
+      initialRouteName="HomeStack"
+      screenOptions={defaultDrawerScreenOptions}
+    >
+      <Drawer.Screen
+        name="HomeStack"
+        options={{ drawerLabel: 'الرئيسية', title: 'الرئيسية' }}
+      >
+        {() =>
+          createDynamicStackNavigator([
+            {
+              name: 'Home',
+              component: HomeScreen,
+              options: { headerShown: false },
+            },
+            {
+              name: 'Posts',
+              component: PostsScreen,
+              options: ({ route }) => ({
+                title: route.params?.name || 'القراءات',
+              }),
+            },
+            {
+              name: 'Single',
+              component: SinglePostScreen,
+              options: ({ route }) => ({
+                title: route.params?.title || 'القراءات',
+              }),
+            },
+          ])
+        }
+      </Drawer.Screen>
+      <Drawer.Screen
+        name="Opening"
+        component={OpeningScreen}
+        options={{ drawerLabel: 'كلمة افتتاحية', title: 'كلمة افتتاحية' }}
+      />
+      <Drawer.Screen
+        name="Arsany"
+        component={PageScreen}
+        options={{
+          drawerLabel: 'تقديم نيافة الأنبا أرساني',
+          title: 'تقديم نيافة الأنبا أرساني',
+        }}
+        initialParams={{ pageId: 2 }}
+      />
+      <Drawer.Screen
+        name="Yassa"
+        component={PageScreen}
+        options={{
+          drawerLabel: 'تقديم القمص يسي ثابت',
+          title: 'تقديم القمص يسي ثابت',
+        }}
+        initialParams={{ pageId: 7 }}
+      />
+      <Drawer.Screen
+        name="Readings"
+        options={{ drawerLabel: 'القراءات', title: 'القراءات' }}
+      >
+        {() =>
+          createDynamicStackNavigator([
+            {
+              name: 'Categories',
+              component: CategoriesScreen,
+              options: { headerShown: false },
+            },
+            {
+              name: 'Posts',
+              component: PostsScreen,
+              options: ({ route }) => ({
+                title: route.params?.name || 'القراءات',
+              }),
+            },
+            {
+              name: 'Single',
+              component: SinglePostScreen,
+              options: ({ route }) => ({
+                title: route.params?.title || 'القراءات',
+              }),
+            },
+          ])
+        }
+      </Drawer.Screen>
+    </Drawer.Navigator>
+  </NavigationContainer>
+);
 
 export default AppNavigator;

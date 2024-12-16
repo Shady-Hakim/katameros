@@ -47,14 +47,14 @@ function SinglePostScreen({ route }) {
         borderBottomWidth: 1,
       },
     }),
-    []
+    [],
   );
 
   const renderers = useMemo(
     () => ({
       a: aRenderer,
     }),
-    [aRenderer]
+    [aRenderer],
   );
 
   if (isLoading && !refreshing) {
@@ -76,11 +76,12 @@ function SinglePostScreen({ route }) {
       ref={ref}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
+      }
+    >
       <View style={styles.container}>
         <RenderHTML
           contentWidth={width}
-          source={{ html: data && data[0].content }}
+          source={{ html: data?.content }}
           tagsStyles={tagsStyles}
           renderers={renderers}
           ignoredDomTags={['form']}

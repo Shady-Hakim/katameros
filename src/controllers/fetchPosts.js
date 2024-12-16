@@ -13,6 +13,7 @@ const fetchPosts = async (id, page) => {
       id: post.id,
       title: post.title.rendered,
       categories: post.categories,
+      content: post.content.rendered,
     })),
     hasNextPage: page < totalPages,
   };

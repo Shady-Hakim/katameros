@@ -9,6 +9,9 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+credentials.json
+katameros-firebase-adminsdk-o9f6k-b5f19c6a7d.json
+package-lock.json
 
 # macOS
 .DS_Store

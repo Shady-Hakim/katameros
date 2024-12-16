@@ -12,7 +12,7 @@ const RenderPost = ({ item, navigation }) => {
       key={item.id}
       style={styles.postContainer}
     >
-      <Text style={styles.postTitle}>&#10232; {item.title}</Text>
+      <Text style={styles.postTitle}>{item.title}</Text>
     </TouchableOpacity>
   );
 };

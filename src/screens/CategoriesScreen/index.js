@@ -49,6 +49,7 @@ function CategoriesScreen({ navigation }) {
       keyExtractor={(item) => item.id}
       refreshing={refreshing}
       onRefresh={handleRefresh}
+      contentContainerStyle={styles.container}
     />
   );
 }

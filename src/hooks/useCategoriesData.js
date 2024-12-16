@@ -1,11 +1,33 @@
 import { useQuery } from 'react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchCategories from '../controllers/fetchCategories';
 
-export default useCategoriesData = (id, page) =>
-  useQuery(['readings-categories', id, page], () => fetchCategories(id, page), {
-    staleTime: 1 * (60 * 60 * 1000 * 24), // 1 Day
-    cacheTime: 1 * (60 * 60 * 1000 * 24), // 1 Day
-    keepPreviousData: true,
-    select: (data) => data.map((cat) => ({ name: cat.name, id: cat.id })),
-    getNextPageParam: (lastPage) => lastPage.nextPage ?? false,
-  });
+const useCategoriesData = (parentId) => {
+  const fetchCategoriesWithStorage = async () => {
+    const storageKey = `categories-${parentId}`;
+
+    const storedData = await AsyncStorage.getItem(storageKey);
+    if (storedData) {
+      console.log(
+        `Categories for parentId ${parentId} retrieved from AsyncStorage.`,
+      );
+      return JSON.parse(storedData);
+    }
+
+    const data = await fetchCategories(parentId);
+
+    return data;
+  };
+
+  return useQuery(
+    ['readings-categories', parentId],
+    fetchCategoriesWithStorage,
+    {
+      staleTime: 24 * 60 * 60 * 1000, // 1 Day
+      cacheTime: 24 * 60 * 60 * 1000, // 1 Day
+      select: (data) => data.map((cat) => ({ name: cat.name, id: cat.id })),
+    },
+  );
+};
+
+export default useCategoriesData;

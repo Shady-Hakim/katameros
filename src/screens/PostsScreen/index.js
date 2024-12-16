@@ -35,7 +35,7 @@ function PostsScreen({ route, navigation }) {
   const error = postsError || catError;
 
   const posts = postsData?.pages.flatMap((page) => page.posts) || [];
-  const categories = (!hasNextPostsPage && categoriesData) || [];
+  const categories = categoriesData || [];
 
   const handleLoadMorePosts = useCallback(() => {
     if (hasNextPostsPage) {
@@ -81,6 +81,7 @@ function PostsScreen({ route, navigation }) {
       onEndReachedThreshold={0.5}
       refreshing={false}
       onRefresh={handleRefresh}
+      contentContainerStyle={styles.container}
       ListFooterComponent={() => (
         <>
           {hasNextPostsPage ? (

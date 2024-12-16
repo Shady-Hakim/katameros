@@ -1,26 +1,28 @@
-import React from 'react';
-import {
-  ScrollView,
-  Text,
-  View,
-  Image,
-  ActivityIndicator,
-  useWindowDimensions,
-} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
 import styles from './styles';
-import usePagesdata from '../../hooks/usePagesData';
-import RenderHTML from 'react-native-render-html';
+import RenderCategory from '../../components/RenderCategory';
+import DownloadOfflineButton from '../../components/DownloadButton';
+import useCategoriesData from '../../hooks/useCategoriesData';
 
-function HomeScreen() {
-  const { isLoading, data, isError, error } = usePagesdata(518);
-  const { width } = useWindowDimensions();
+function HomeScreen({ navigation }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const { isLoading, data, isError, error, refetch } = useCategoriesData(
+    0,
+    false,
+  );
+  data?.shift();
 
-  const tagsStyles = {
-    p: {
-      textAlign: 'left',
-      fontSize: 18,
-    },
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
   };
+
+  const renderItem = useCallback(
+    ({ item }) => <RenderCategory item={item} navigation={navigation} />,
+    [navigation],
+  );
 
   if (isLoading) {
     return (
@@ -29,6 +31,7 @@ function HomeScreen() {
       </View>
     );
   }
+
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
@@ -36,45 +39,33 @@ function HomeScreen() {
       </View>
     );
   }
+
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
+    <FlatList
+      ListHeaderComponent={() => (
+        <>
           <Image
             style={styles.logo}
             source={require('../../assets/images/logo.png')}
           />
-          <View style={styles.popeContainer}>
-            <Image
-              style={styles.popeImage}
-              source={require('../../assets/images/anba.png')}
-            />
-            <Image
-              style={styles.popeImage}
-              source={require('../../assets/images/pope.png')}
-            />
+          <View style={styles.pageTitleContainer}>
+            <Text style={styles.pageTitle}>
+              دراسات في القراءات اليومية للكنيسة القبطية الارثوذكسية
+            </Text>
+            <Text style={styles.pageSubTitle}>
+              (وباقة مختارة من عظات الآباء الاولين وعظات الآباء المعاصرين)
+            </Text>
           </View>
-        </View>
-        <View style={styles.pageTitleContainer}>
-          <Text style={styles.pageTitle}>
-            دراسات في القراءات اليومية للكنيسة القبطية الارثوذكسية
-          </Text>
-          <Text style={styles.pageSubTitle}>
-            (وباقة مختارة من عظات الآباء الاولين وعظات الآباء المعاصرين)
-          </Text>
-        </View>
-        <RenderHTML
-          contentWidth={width}
-          source={{ html: data && data[0].content }}
-          tagsStyles={tagsStyles}
-          ignoredDomTags={['form']}
-        />
-        <Image
-          style={styles.holandLogo}
-          source={require('../../assets/images/holand.png')}
-        />
-      </View>
-    </ScrollView>
+          <DownloadOfflineButton />
+        </>
+      )}
+      data={data}
+      renderItem={renderItem}
+      contentContainerStyle={styles.container}
+      keyExtractor={(item) => item.id}
+      refreshing={refreshing}
+      onRefresh={handleRefresh}
+    />
   );
 }
 
