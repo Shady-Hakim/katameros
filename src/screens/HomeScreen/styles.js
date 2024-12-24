@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingBottom: 40,
-    marginHorizontal: 16,
+    paddingHorizontal: 16,
   },
   loadingContainer: {
     flex: 1,

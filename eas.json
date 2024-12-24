@@ -15,8 +15,7 @@
     "production": {
       "channel": "production",
       "ios": {
-        "buildConfiguration": "Release",
-        "autoIncrement": "version"
+        "buildConfiguration": "Release"
       }
     }
   },

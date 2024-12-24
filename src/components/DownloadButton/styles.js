@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  downloadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  spinner: {
+    marginRight: 10,
+  },
 });
 
 export default styles;

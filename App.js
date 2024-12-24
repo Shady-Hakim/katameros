@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet, Text, View, I18nManager } from 'react-native';
 import * as Updates from 'expo-updates';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -9,6 +9,8 @@ import AppNavigator from './src/navigation/AppNavigator';
 const queryClient = new QueryClient();
 
 const App = () => {
+  const [isConnected, setIsConnected] = useState(null);
+
   async function onFetchUpdateAsync() {
     try {
       const update = await Updates.checkForUpdateAsync();
@@ -30,30 +32,25 @@ const App = () => {
   useEffect(() => {
     I18nManager.forceRTL(true);
     I18nManager.allowRTL(true);
-  });
+  }, []);
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
-      if (state.isConnected) {
+      if (state.isConnected !== isConnected) {
+        setIsConnected(state.isConnected);
         Toast.show({
-          type: 'success',
-          text1: 'متصل',
-          text2: 'أنت الآن متصل بالإنترنت!',
-          position: 'bottom',
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'غير متصل',
-          text2: 'لا يوجد اتصال بالإنترنت!',
+          type: state.isConnected ? 'success' : 'error',
+          text1: state.isConnected ? 'متصل' : 'غير متصل',
+          text2: state.isConnected
+            ? 'أنت الآن متصل بالإنترنت!'
+            : 'لا يوجد اتصال بالإنترنت!',
           position: 'bottom',
         });
       }
     });
 
-    // Cleanup subscription
     return () => unsubscribe();
-  }, []);
+  }, [isConnected]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -98,6 +95,7 @@ const styles = StyleSheet.create({
     padding: 15,
     position: 'absolute',
     bottom: 30,
+    alignItems: 'flex-start',
   },
   successToast: {
     backgroundColor: '#4caf50',
