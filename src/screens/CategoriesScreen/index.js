@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, ActivityIndicator, FlatList } from 'react-native';
 import styles from './styles';
@@ -8,8 +8,11 @@ import RenderCategory from '../../components/RenderCategory';
 function CategoriesScreen({ navigation }) {
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
-  const { isLoading, data, isError, refetch } = useCategoriesData(0);
-  data?.shift();
+  const { fetchCategories, data, isLoading, isError } = useCategoriesData();
+
+  useEffect(() => {
+    fetchCategories({ parentId: 0, forceRefresh: false });
+  }, [fetchCategories]);
 
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -17,12 +20,12 @@ function CategoriesScreen({ navigation }) {
 
   const renderItem = useCallback(
     ({ item }) => <RenderCategory item={item} navigation={navigation} />,
-    [navigation],
+    [navigation]
   );
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await refetch();
+    await fetchCategories({ parentId: 0, forceRefresh: true });
     setRefreshing(false);
   };
 
@@ -42,6 +45,7 @@ function CategoriesScreen({ navigation }) {
       </View>
     );
   }
+
   return (
     <FlatList
       data={data}
@@ -55,7 +59,9 @@ function CategoriesScreen({ navigation }) {
     />
   );
 }
+
 CategoriesScreen.propTypes = {
   navigation: PropTypes.object,
 };
+
 export default CategoriesScreen;

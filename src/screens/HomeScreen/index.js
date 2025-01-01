@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
 import styles from './styles';
 import RenderCategory from '../../components/RenderCategory';
@@ -7,18 +7,21 @@ import useCategoriesData from '../../hooks/useCategoriesData';
 
 function HomeScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
-  const { isLoading, data, isError, refetch } = useCategoriesData(0);
-  data?.shift();
+  const { fetchCategories, data, isLoading, isError } = useCategoriesData();
+
+  useEffect(() => {
+    fetchCategories({ parentId: 0, forceRefresh: false });
+  }, [fetchCategories]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await refetch();
+    await fetchCategories({ parentId: 0, forceRefresh: true });
     setRefreshing(false);
   };
 
   const renderItem = useCallback(
     ({ item }) => <RenderCategory item={item} navigation={navigation} />,
-    [navigation],
+    [navigation]
   );
 
   if (isLoading) {

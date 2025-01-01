@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import styles from './styles';
@@ -20,13 +20,15 @@ function PostsScreen({ route, navigation }) {
   } = usePostsData(id);
 
   const {
-    isLoading: catIsLoading,
+    fetchCategories,
     data: categoriesData,
+    isLoading: catIsLoading,
     isError: catIsError,
-    fetchNextPage: fetchNextCatPage,
-    hasNextPage: hasNextCatPage,
-    refetch: catRefetch,
-  } = useCategoriesData(id);
+  } = useCategoriesData();
+
+  useEffect(() => {
+    fetchCategories({ parentId: id, forceRefresh: false });
+  }, [fetchCategories]);
 
   const isLoading = postsIsLoading || catIsLoading;
   const isError = postsIsError || catIsError;
@@ -40,15 +42,9 @@ function PostsScreen({ route, navigation }) {
     }
   }, [hasNextPostsPage, fetchNextPostsPage]);
 
-  const handleLoadMoreCategories = useCallback(() => {
-    if (!hasNextPostsPage && hasNextCatPage) {
-      fetchNextCatPage();
-    }
-  }, [hasNextPostsPage, hasNextCatPage, fetchNextCatPage]);
-
   const handleRefresh = async () => {
     await postsRefetch();
-    await catRefetch();
+    await fetchCategories({ parentId: id, forceRefresh: true });
   };
 
   if (isLoading && posts.length === 0) {
@@ -92,11 +88,7 @@ function PostsScreen({ route, navigation }) {
                 <RenderCategory item={item} navigation={navigation} />
               )}
               keyExtractor={(item) => item.id.toString()}
-              onEndReached={handleLoadMoreCategories}
               onEndReachedThreshold={0.5}
-              ListFooterComponent={() =>
-                hasNextCatPage && <ActivityIndicator size="small" />
-              }
             />
           )}
         </>
