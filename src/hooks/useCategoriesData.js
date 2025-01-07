@@ -1,40 +1,33 @@
-import { useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchCategories from '../controllers/fetchCategories';
 
-const useCategoriesData = () => {
-  const fetchCategoriesWithStorage = async ({
-    parentId,
-    forceRefresh = false,
-  }) => {
+const useCategoriesData = (parentId) => {
+  const fetchCategoriesWithStorage = async () => {
     const storageKey = `categories-${parentId}`;
 
-    if (!forceRefresh) {
-      const storedData = await AsyncStorage.getItem(storageKey);
-      if (storedData) {
-        console.log(
-          `Categories for parentId ${parentId} retrieved from AsyncStorage.`
-        );
-        return JSON.parse(storedData);
-      }
+    const storedData = await AsyncStorage.getItem(storageKey);
+    if (storedData) {
+      console.log(
+        `Categories for parentId ${parentId} retrieved from AsyncStorage.`,
+      );
+      return JSON.parse(storedData);
     }
 
     const data = await fetchCategories(parentId);
+
     return data;
   };
 
-  const mutation = useMutation(fetchCategoriesWithStorage, {
-    onSuccess: async (data, variables) => {
-      const { parentId } = variables;
-      const storageKey = `categories-${parentId}`;
-      await AsyncStorage.setItem(storageKey, JSON.stringify(data));
+  return useQuery(
+    ['readings-categories', parentId],
+    fetchCategoriesWithStorage,
+    {
+      staleTime: 24 * 60 * 60 * 1000, // 1 Day
+      cacheTime: 24 * 60 * 60 * 1000, // 1 Day
+      select: (data) => data.map((cat) => ({ name: cat.name, id: cat.id })),
     },
-  });
-
-  return {
-    fetchCategories: mutation.mutate,
-    ...mutation,
-  };
+  );
 };
 
 export default useCategoriesData;
