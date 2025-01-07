@@ -9,7 +9,6 @@ function CategoriesScreen({ navigation }) {
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const { isLoading, data, isError, refetch } = useCategoriesData(0);
-  data?.shift();
 
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -17,7 +16,7 @@ function CategoriesScreen({ navigation }) {
 
   const renderItem = useCallback(
     ({ item }) => <RenderCategory item={item} navigation={navigation} />,
-    [navigation],
+    [navigation]
   );
 
   const handleRefresh = async () => {

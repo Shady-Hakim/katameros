@@ -8,7 +8,6 @@ import useCategoriesData from '../../hooks/useCategoriesData';
 function HomeScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const { isLoading, data, isError, refetch } = useCategoriesData(0);
-  data?.shift();
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -18,7 +17,7 @@ function HomeScreen({ navigation }) {
 
   const renderItem = useCallback(
     ({ item }) => <RenderCategory item={item} navigation={navigation} />,
-    [navigation],
+    [navigation]
   );
 
   if (isLoading) {

@@ -7,14 +7,13 @@ const RenderCategory = memo(({ item, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('Posts', {
+        navigation.push('Posts', {
           id: item.id,
           name: item.name,
         })
       }
       key={item?.id}
-      style={styles.item}
-    >
+      style={styles.item}>
       <Text style={styles.title}>{item?.name}</Text>
     </TouchableOpacity>
   );
