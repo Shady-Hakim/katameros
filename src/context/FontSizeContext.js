@@ -7,6 +7,13 @@ const FONT_SIZE_KEY = 'appFontSizePreference';
 
 // Font size scales
 const FONT_SIZES = {
+  extraSmall: {
+    title: 16,
+    subtitle: 12,
+    body: 12,
+    heading: 18,
+    pageTitle: 14,
+  },
   small: {
     title: 18,
     subtitle: 14,
@@ -35,12 +42,26 @@ const FONT_SIZES = {
     heading: 26,
     pageTitle: 22,
   },
+  extraExtraLarge: {
+    title: 26,
+    subtitle: 22,
+    body: 22,
+    heading: 28,
+    pageTitle: 24,
+  },
 };
 
-const SIZES = ['small', 'medium', 'large', 'extraLarge'];
+const SIZES = [
+  'extraSmall',
+  'small',
+  'medium',
+  'large',
+  'extraLarge',
+  'extraExtraLarge',
+];
 
 export const FontSizeProvider = ({ children }) => {
-  const [currentSizeIndex, setCurrentSizeIndex] = useState(1); // Default to 'medium'
+  const [currentSizeIndex, setCurrentSizeIndex] = useState(2); // Default to 'medium'
   const [isLoading, setIsLoading] = useState(true);
 
   // Load saved font size preference on mount
