@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
 import styles from './styles';
 import RenderCategory from '../../components/RenderCategory';
-import DownloadOfflineButton from '../../components/DownloadButton';
 import useCategoriesData from '../../hooks/useCategoriesData';
 
 function HomeScreen({ navigation }) {
@@ -54,7 +53,6 @@ function HomeScreen({ navigation }) {
               (وباقة مختارة من عظات الآباء الاولين وعظات الآباء المعاصرين)
             </Text>
           </View>
-          <DownloadOfflineButton />
         </>
       )}
       data={data}
