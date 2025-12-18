@@ -3,10 +3,12 @@ import { Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
 import styles from './styles';
 import RenderCategory from '../../components/RenderCategory';
 import useCategoriesData from '../../hooks/useCategoriesData';
+import { useFontSize } from '../../context/FontSizeContext';
 
 function HomeScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const { isLoading, data, isError, refetch } = useCategoriesData(0);
+  const { fontSizes } = useFontSize();
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -46,10 +48,11 @@ function HomeScreen({ navigation }) {
             source={require('../../assets/images/logo.png')}
           />
           <View style={styles.pageTitleContainer}>
-            <Text style={styles.pageTitle}>
+            <Text style={[styles.pageTitle, { fontSize: fontSizes.pageTitle }]}>
               دراسات في القراءات اليومية للكنيسة القبطية الارثوذكسية
             </Text>
-            <Text style={styles.pageSubTitle}>
+            <Text
+              style={[styles.pageSubTitle, { fontSize: fontSizes.subtitle }]}>
               (وباقة مختارة من عظات الآباء الاولين وعظات الآباء المعاصرين)
             </Text>
           </View>

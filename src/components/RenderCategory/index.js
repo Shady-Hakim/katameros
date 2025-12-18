@@ -2,8 +2,11 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
+import { useFontSize } from '../../context/FontSizeContext';
 
 const RenderCategory = memo(({ item, navigation }) => {
+  const { fontSizes } = useFontSize();
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -14,7 +17,9 @@ const RenderCategory = memo(({ item, navigation }) => {
       }
       key={item?.id}
       style={styles.item}>
-      <Text style={styles.title}>{item?.name}</Text>
+      <Text style={[styles.title, { fontSize: fontSizes.title }]}>
+        {item?.name}
+      </Text>
     </TouchableOpacity>
   );
 });

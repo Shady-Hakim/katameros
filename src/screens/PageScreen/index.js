@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import usePagesData from '../../hooks/usePagesData';
+import { useFontSize } from '../../context/FontSizeContext';
 import styles from '../PageScreen/styles';
 
 function PageScreen({ route }) {
@@ -17,6 +18,7 @@ function PageScreen({ route }) {
   const { isLoading, data, isError, refetch } = usePagesData(pageId);
   const [refreshing, setRefreshing] = useState(false);
   const { width } = useWindowDimensions();
+  const { fontSizes } = useFontSize();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -27,10 +29,19 @@ function PageScreen({ route }) {
     () => ({
       p: {
         textAlign: 'left',
-        fontSize: 18,
+        fontSize: fontSizes.body,
+      },
+      h1: {
+        fontSize: fontSizes.heading,
+      },
+      h2: {
+        fontSize: fontSizes.heading,
+      },
+      h3: {
+        fontSize: fontSizes.title,
       },
     }),
-    [],
+    [fontSizes]
   );
 
   if (isLoading && !refreshing) {
@@ -53,8 +64,7 @@ function PageScreen({ route }) {
     <ScrollView
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
+      }>
       <View style={styles.container}>
         <RenderHTML
           contentWidth={width}

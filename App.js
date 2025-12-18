@@ -7,6 +7,8 @@ import useAutoDownload from './src/hooks/useAutoDownload';
 import useNetworkStatus from './src/hooks/useNetworkStatus';
 import useAppUpdates from './src/hooks/useAppUpdates';
 import { toastConfig } from './src/config/toastConfig';
+import { FontSizeProvider } from './src/context/FontSizeContext';
+import FloatingFontSizeButtons from './src/components/FloatingFontSizeButtons';
 
 const queryClient = new QueryClient();
 
@@ -21,13 +23,16 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <View style={styles.container}>
-        <StatusBar barStyle={'light-content'} backgroundColor={'#4c2710'} />
-        <AppNavigator />
-        <Toast config={toastConfig} />
-      </View>
-    </QueryClientProvider>
+    <FontSizeProvider>
+      <QueryClientProvider client={queryClient}>
+        <View style={styles.container}>
+          <StatusBar barStyle={'light-content'} backgroundColor={'#4c2710'} />
+          <AppNavigator />
+          <FloatingFontSizeButtons />
+          <Toast config={toastConfig} />
+        </View>
+      </QueryClientProvider>
+    </FontSizeProvider>
   );
 };
 

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import useSinglePost from '../../hooks/useSinglePost';
+import { useFontSize } from '../../context/FontSizeContext';
 import styles from '../SinglePostScreen/styles';
 
 function SinglePostScreen({ route }) {
@@ -19,6 +20,7 @@ function SinglePostScreen({ route }) {
   const { width } = useWindowDimensions();
   const [refreshing, setRefreshing] = useState(false);
   const ref = React.useRef();
+  const { fontSizes } = useFontSize();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -38,7 +40,7 @@ function SinglePostScreen({ route }) {
     () => ({
       p: {
         textAlign: 'left',
-        fontSize: 18,
+        fontSize: fontSizes.body,
       },
       body: {
         textAlign: 'left',
@@ -46,15 +48,24 @@ function SinglePostScreen({ route }) {
       td: {
         borderBottomWidth: 1,
       },
+      h1: {
+        fontSize: fontSizes.heading,
+      },
+      h2: {
+        fontSize: fontSizes.heading,
+      },
+      h3: {
+        fontSize: fontSizes.title,
+      },
     }),
-    [],
+    [fontSizes]
   );
 
   const renderers = useMemo(
     () => ({
       a: aRenderer,
     }),
-    [aRenderer],
+    [aRenderer]
   );
 
   if (isLoading && !refreshing) {
@@ -78,8 +89,7 @@ function SinglePostScreen({ route }) {
       ref={ref}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
+      }>
       <View style={styles.container}>
         <RenderHTML
           contentWidth={width}
