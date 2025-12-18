@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet, Text, View, I18nManager } from 'react-native';
 import * as Updates from 'expo-updates';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import AppNavigator from './src/navigation/AppNavigator';

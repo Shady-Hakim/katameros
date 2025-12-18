@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchPages from '../controllers/fetchPages';
 
@@ -17,9 +17,9 @@ const usePagesData = (id) => {
     }
   };
 
-  return useQuery(
-    ['pages', id],
-    async () => {
+  return useQuery({
+    queryKey: ['pages', id],
+    queryFn: async () => {
       const cachedPages = await fetchPagesFromStorage();
       if (cachedPages) {
         return cachedPages;
@@ -27,11 +27,9 @@ const usePagesData = (id) => {
       const pages = await fetchPages(id);
       return pages;
     },
-    {
-      staleTime: 1 * (60 * 60 * 1000 * 24 * 30), // 1 Month
-      cacheTime: 1 * (60 * 60 * 1000 * 24 * 30), // 1 Month
-    },
-  );
+    staleTime: 1 * (60 * 60 * 1000 * 24 * 30), // 1 Month
+    gcTime: 1 * (60 * 60 * 1000 * 24 * 30), // 1 Month
+  });
 };
 
 export default usePagesData;

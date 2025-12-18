@@ -17,6 +17,10 @@
       "enabled": true,
       "checkAutomatically": "ON_LOAD"
     },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "newArchEnabled": true,
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
@@ -38,9 +42,6 @@
       "eas": {
         "projectId": "52f19064-ca95-4791-9176-d9894aa8a4b5"
       }
-    },
-    "runtimeVersion": {
-      "policy": "sdkVersion"
     }
   }
 }

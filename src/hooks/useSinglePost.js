@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchSinglePost from '../controllers/fetchSinglePost';
 
@@ -21,9 +21,11 @@ const useSinglePost = (id) => {
     return fetchedData[0];
   };
 
-  return useQuery(['single-post', id], fetchSinglePostWithStorage, {
+  return useQuery({
+    queryKey: ['single-post', id],
+    queryFn: fetchSinglePostWithStorage,
     staleTime: 1 * (60 * 60 * 1000 * 24), // 1 day
-    cacheTime: 1 * (60 * 60 * 1000 * 24), // 1 day
+    gcTime: 1 * (60 * 60 * 1000 * 24), // 1 day
   });
 };
 

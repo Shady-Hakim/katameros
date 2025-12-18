@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchPosts from '../controllers/fetchPosts';
 
@@ -9,7 +9,7 @@ const usePostsData = (categoryId) => {
     const storedData = await AsyncStorage.getItem(storageKey);
     if (storedData) {
       console.log(
-        `Posts for category ${categoryId} page ${pageParam} retrieved from AsyncStorage.`,
+        `Posts for category ${categoryId} page ${pageParam} retrieved from AsyncStorage.`
       );
       return JSON.parse(storedData);
     }
@@ -19,18 +19,17 @@ const usePostsData = (categoryId) => {
     return fetchedData;
   };
 
-  return useInfiniteQuery(
-    ['readings-posts', categoryId],
-    fetchPostsWithStorage,
-    {
-      staleTime: 24 * 60 * 60 * 1000, // 1 Day
-      cacheTime: 24 * 60 * 60 * 1000, // 1 Day
-      enabled: !!categoryId,
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.hasNextPage ? allPages.length + 1 : false;
-      },
+  return useInfiniteQuery({
+    queryKey: ['readings-posts', categoryId],
+    queryFn: fetchPostsWithStorage,
+    staleTime: 24 * 60 * 60 * 1000, // 1 Day
+    gcTime: 24 * 60 * 60 * 1000, // 1 Day
+    enabled: !!categoryId,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.hasNextPage ? allPages.length + 1 : undefined;
     },
-  );
+  });
 };
 
 export default usePostsData;
