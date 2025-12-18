@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ScrollView,
   Text,
@@ -10,17 +10,31 @@ import {
 import styles from './styles';
 import usePagesdata from '../../hooks/usePagesData';
 import RenderHTML from 'react-native-render-html';
+import { useFontSize } from '../../context/FontSizeContext';
 
 function OpeningScreen() {
   const { isLoading, data, isError } = usePagesdata(518);
   const { width } = useWindowDimensions();
+  const { fontSizes } = useFontSize();
 
-  const tagsStyles = {
-    p: {
-      textAlign: 'left',
-      fontSize: 18,
-    },
-  };
+  const tagsStyles = useMemo(
+    () => ({
+      p: {
+        textAlign: 'left',
+        fontSize: fontSizes.body,
+      },
+      h1: {
+        fontSize: fontSizes.heading,
+      },
+      h2: {
+        fontSize: fontSizes.heading,
+      },
+      h3: {
+        fontSize: fontSizes.title,
+      },
+    }),
+    [fontSizes]
+  );
 
   if (isLoading) {
     return (
@@ -32,7 +46,7 @@ function OpeningScreen() {
   if (isError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>
+        <Text style={{ fontSize: fontSizes.body }}>
           حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى لاحقًا.
         </Text>
       </View>
