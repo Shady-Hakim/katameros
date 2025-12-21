@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://api.katameros.app';
+const BASE_URL = 'http://api.katameros.bible';
 const LANGUAGE_ID = 3; // Arabic
 
 const getCurrentDate = () => {

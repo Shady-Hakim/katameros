@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
     paddingHorizontal: 16,
@@ -35,3 +35,5 @@ export default styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default styles;

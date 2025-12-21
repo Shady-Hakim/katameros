@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
+const styles = StyleSheet.create({
   item: {
     backgroundColor: '#fff',
     padding: 20,
@@ -19,3 +19,5 @@ export default styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default styles;
