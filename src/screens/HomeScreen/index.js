@@ -18,7 +18,7 @@ import {
 
 function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
-  const { isLoading, data, isError, refetch } = useTodayReadings();
+  const { isLoading, data, isError, error, refetch } = useTodayReadings();
   const { fontSizes } = useFontSize();
 
   const handleRefresh = async () => {
@@ -40,6 +40,7 @@ function HomeScreen() {
       <View style={styles.loadingContainer}>
         <Text style={[styles.errorText, { fontSize: fontSizes.body }]}>
           حدث خطأ أثناء تحميل القراءات. يرجى المحاولة مرة أخرى لاحقًا.
+          {error.message}
         </Text>
       </View>
     );

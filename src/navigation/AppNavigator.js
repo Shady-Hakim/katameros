@@ -34,6 +34,7 @@ const defaultDrawerScreenOptions = ({ navigation }) => ({
       onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
     />
   ),
+  headerRight: () => null,
   headerStyle: {
     backgroundColor: '#4c2710',
   },
@@ -65,12 +66,10 @@ const AppNavigator = () => (
   <NavigationContainer>
     <Drawer.Navigator
       initialRouteName="HomeStack"
-      screenOptions={defaultDrawerScreenOptions}
-    >
+      screenOptions={defaultDrawerScreenOptions}>
       <Drawer.Screen
         name="HomeStack"
-        options={{ drawerLabel: 'الرئيسية', title: 'الرئيسية' }}
-      >
+        options={{ drawerLabel: 'الرئيسية', title: 'الرئيسية' }}>
         {() =>
           createDynamicStackNavigator([
             {
@@ -120,8 +119,7 @@ const AppNavigator = () => (
       />
       <Drawer.Screen
         name="Readings"
-        options={{ drawerLabel: 'القراءات', title: 'القراءات' }}
-      >
+        options={{ drawerLabel: 'القراءات', title: 'القراءات' }}>
         {() =>
           createDynamicStackNavigator([
             {

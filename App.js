@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StatusBar, StyleSheet, View, I18nManager } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
@@ -13,14 +13,17 @@ import FloatingFontSizeButtons from './src/components/FloatingFontSizeButtons';
 const queryClient = new QueryClient();
 
 const App = () => {
+  // Enable RTL support safely within the component
+  React.useEffect(() => {
+    if (!I18nManager.isRTL) {
+      I18nManager.allowRTL(true);
+      I18nManager.forceRTL(true);
+    }
+  }, []);
+
   useAppUpdates();
   useNetworkStatus();
   useAutoDownload();
-
-  useEffect(() => {
-    I18nManager.forceRTL(true);
-    I18nManager.allowRTL(true);
-  }, []);
 
   return (
     <FontSizeProvider>

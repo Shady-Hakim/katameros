@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     flex: 1,
+    textAlign: 'left',
   },
   icon: {
     color: '#fff',
@@ -152,6 +153,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontWeight: 'bold',
     lineHeight: 24,
+    textAlign: 'left',
   },
   readingContainer: {
     marginBottom: 16,
@@ -162,6 +164,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontWeight: 'bold',
     lineHeight: 24,
+    textAlign: 'left',
   },
   passageContainer: {
     marginBottom: 16,
@@ -170,6 +173,7 @@ const styles = StyleSheet.create({
     color: '#B8875A',
     fontWeight: 'bold',
     marginBottom: 8,
+    textAlign: 'left',
   },
   verseContainer: {
     flexDirection: 'row',
@@ -181,11 +185,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 8,
     minWidth: 30,
+    textAlign: 'left',
   },
   verseText: {
     color: '#4C2710',
     flex: 1,
     lineHeight: 28,
+    textAlign: 'left',
   },
   htmlContainer: {
     marginVertical: 8,
@@ -193,6 +199,7 @@ const styles = StyleSheet.create({
   htmlText: {
     color: '#4C2710',
     lineHeight: 24,
+    textAlign: 'left',
   },
   conclusion: {
     color: '#6B4423',
@@ -200,6 +207,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontWeight: 'bold',
     lineHeight: 24,
+    textAlign: 'left',
   },
 });
 
