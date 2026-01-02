@@ -2,7 +2,7 @@
   "expo": {
     "name": "Katameros",
     "slug": "Katameros",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -17,15 +17,13 @@
       "enabled": true,
       "checkAutomatically": "ON_LOAD"
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "newArchEnabled": true,
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ilampagency.katameros",
-      "buildNumber": "10",
+      "buildNumber": "11",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -36,7 +34,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.ilampagency.katamerosApp",
-      "versionCode": 10,
+      "versionCode": 11,
       "targetSdkVersion": 35
     },
     "web": {
